@@ -52,18 +52,18 @@ const ListingUserSchema = new Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
+ListingUserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-userSchema.methods.isPasswordCorrect = async function (password) {
+ListingUserSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.generateAccessToken = async function () {
+ListingUserSchema.methods.generateAccessToken = async function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -77,7 +77,7 @@ userSchema.methods.generateAccessToken = async function () {
     }
   );
 };
-userSchema.methods.generateRefreshToken = async function () {
+ListingUserSchema.methods.generateRefreshToken = async function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -92,6 +92,6 @@ userSchema.methods.generateRefreshToken = async function () {
   );
 };
 
-// userSchema.plugin(mongooseAggregatePaginate);
+// ListingUserSchema.plugin(mongooseAggregatePaginate);
 
 export const ListingUser = mongoose.model("User", ListingUserSchema);

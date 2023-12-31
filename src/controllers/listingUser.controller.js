@@ -1,4 +1,4 @@
-import { User } from "../models/users.model.js";
+
 import { ListingUser } from "../models/userslisting.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -8,7 +8,7 @@ import { uploadOnCloudinary } from "../utils/coundinary.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
-    const user = await User.findById(userId);
+    const user = await ListingUser.findById(userId);
 
     const accessToken = await user.generateAccessToken();
     const refreshToken = await user.generateRefreshToken();
@@ -26,7 +26,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, username, fullName, password } = req.body;
+  const { email, username, firstName, lastName, mobile, role, password } = req.body;
 
   if (
     [email, username, firstName, lastName, mobile, role, password].some(
